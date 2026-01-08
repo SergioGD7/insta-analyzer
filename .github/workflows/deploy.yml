@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+
+# Permisos necesarios para desplegar en Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Permite cancelar despliegues anteriores si subes cambios nuevos rápido
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (Descargar código)
+        uses: actions/checkout@v4
+
+      - name: Setup Node (Preparar entorno)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies (Instalar)
+        run: npm ci
+
+      - name: Build (Construir proyecto)
+        run: npm run build
+
+      - name: Setup Pages (Configurar Pages)
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact (Subir archivos)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages (Publicar)
+        id: deployment
+        uses: actions/deploy-pages@v4
