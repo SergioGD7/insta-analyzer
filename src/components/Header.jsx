@@ -14,7 +14,7 @@ const Header = ({ onOpenHelp }) => {
           className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors backdrop-blur-sm border border-white/20"
         >
           <HelpCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
-          <span className="hidden sm:inline">Guía JSON</span> 
+          <span className="hidden sm:inline">Guía JSON</span>
           <span className="sm:hidden">Ayuda</span>
         </button>
       </div>
